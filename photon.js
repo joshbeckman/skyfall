@@ -22,18 +22,13 @@ function init() {
 
 function start(cb) {
     board.on('ready', function() {
-        console.log('board ready');
-        const weather = new Shield({
-            variant:     'PHOTON',
-            freq:        freq,
-            elevation:   elev
-        });
+        console.log('light board ready');
+        const power = new five.Pin('A5');
+        power.high();   // A constant power source for our photoresistor
         const photoresistor = new five.Sensor({
             pin: 'A4',
             freq: freq
         });
-        const power = new five.Pin('A5');
-        power.high();   // A constant power source for our photoresistor
 
         photoresistor.on('data', function onLight(data) {
             let packet = {
@@ -42,6 +37,14 @@ function start(cb) {
                 source:   "PHOTORESISTOR"
             };
             cb(packet);
+        });
+    });
+    board.on('ready', function() {
+        console.log('weather board ready');
+        const weather = new Shield({
+            variant:     'PHOTON',
+            freq:        freq,
+            elevation:   elev
         });
 
         weather.on('data', function onWeather() {
