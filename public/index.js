@@ -1,7 +1,11 @@
 window.skyfall = window.skyfall || {};
 (function(window, document) {
-    var h1 = document.querySelector('h1'),
-        p = document.querySelector('p');
+    var h1      = document.querySelector('h1'),
+        pBaro   = document.querySelector('#BARORESISTOR'),
+        pThermo = document.querySelector('#THERMORESISTOR'),
+        pPhoto  = document.querySelector('#PHOTORESISTOR'),
+        pHumid  = document.querySelector('#HUMISTOR'),
+        p       = document.querySelector('#help');
 
     document.querySelector('#socketScript')
         .addEventListener('load', onload, false);
@@ -15,15 +19,17 @@ window.skyfall = window.skyfall || {};
     }
 
     function handleBaro(data) {
-        console.log(data);
+        if (!(data.unit == 'kPa')) return;
+        pBaro.textContent = "" + data.value.toFixed(2) + data.unit;
     }
     function handlePhoto(data) {
-        console.log(data);
+        pPhoto.textContent = "" + data.value.toFixed(2) + data.unit;
     }
     function handleThermo(data) {
-        console.log(data);
+        if (!(data.unit == 'F')) return;
+        pThermo.textContent = "" + data.value.toFixed(2) + "º" + data.unit;
     }
     function handleHumid(data) {
-        console.log(data);
+        pHumid.textContent = "" + data.value.toFixed(2) + data.unit;
     }
 })(this, this.document);
