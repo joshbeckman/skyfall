@@ -17,9 +17,6 @@ app.use(function *(next){
     yield next;
 });
 
-app.listen(port);
-console.info('%s v%s listening on 0.0.0.0:%s', pkg.name, pkg.version, port);
-
 app.io.use(function* (next) {
     console.log('connect');
     yield* next;
@@ -27,3 +24,5 @@ app.io.use(function* (next) {
 });
 
 app.use(routes.webhook(app));
+app.listen(port);
+console.info('%s v%s listening on 0.0.0.0:%s', pkg.name, pkg.version, port);
