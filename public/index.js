@@ -12,10 +12,30 @@ window.skyfall = window.skyfall || {};
 
     function onload() {
         window.skyfall.socket = window.io();
-        window.skyfall.socket.on('BARORESISTOR',     handleBaro);
-        window.skyfall.socket.on('PHOTORESISTOR',    handlePhoto);
-        window.skyfall.socket.on('THERMORESISTOR',   handleThermo);
-        window.skyfall.socket.on('HUMISTOR',         handleHumid);
+        window.skyfall.socket.on('SKYFALL', handleSkyfall);
+    }
+
+    function handleSkyfall(data) {
+        data.data.map(routeSensorData);
+    }
+
+    function routeSensorData(data) {
+        switch (data.source) {
+            case 'HUMISTOR':
+                handleHumid(data);
+                break;
+            case 'PHOTORESISTOR':
+                handlePhoto(data);
+                break;
+            case 'THERMORESISTOR':
+                handleThermo(data);
+                break;
+            case 'BARORESISTOR':
+                handleBaro(data);
+                break;
+            default:
+                console.log(data);
+        }
     }
 
     function handleBaro(data) {

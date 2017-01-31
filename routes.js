@@ -6,7 +6,7 @@ var parse = require('co-body'),
 
 module.exports = {
     webhook: webhook,
-    output: output
+    latest: latest
 };
 
 function webhook(app) {
@@ -26,18 +26,13 @@ function webhook(app) {
                 { unit: 'RH', value: parseFloat(body.RH), source: 'HUMISTOR' }
             ]
         };
-        app.io.emit('BARORESISTOR', latest.data[0]);
-        app.io.emit('THERMORESISTOR', latest.data[1]);
-        app.io.emit('THERMORESISTOR', latest.data[2]);
-        app.io.emit('PHOTORESISTOR', latest.data[3]);
-        app.io.emit('HUMISTOR', latest.data[4]);
         app.io.emit('SKYFALL', latest);
         this.body = {};
     });
 };
 
-function output(app) {
-    return route.get('/output/latest', function* rouote_output() {
+function latest(app) {
+    return route.get('/output/latest', function* rouote_latest() {
         this.body = latest;
     });
 };
