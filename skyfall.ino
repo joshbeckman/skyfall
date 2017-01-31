@@ -51,6 +51,8 @@ void setup() {
   //from 1 to 128 samples. The higher the oversample rate the greater
   //the time between data samples.
   
+  sensor.enableEventFlags(); //Necessary register calls to enble temp, baro and alt
+  
   // First, the D7 LED will go on
   // digitalWrite(boardLed,HIGH);
 
