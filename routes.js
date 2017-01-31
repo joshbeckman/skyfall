@@ -16,7 +16,7 @@ function webhook(app) {
         
         latest_data = {
             created_at: body.published_at,
-            guid: body.buid,
+            device_id: body.guid,
             location: body.LOCN,
             data: [
                 { unit: 'kPa', value: (parseFloat(body.KPA)/1000), source: 'BARORESISTOR' },
