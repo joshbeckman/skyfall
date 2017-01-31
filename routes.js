@@ -2,7 +2,7 @@
 
 var parse = require('co-body'),
     route = require('koa-route'),
-    latest = {};
+    latest_data = {};
 
 module.exports = {
     webhook: webhook,
@@ -14,7 +14,7 @@ function webhook(app) {
         var body = yield parse(this);
         console.log(body);
         
-        latest = {
+        latest_data = {
             created_at: body.published_at,
             guid: body.buid,
             location: body.LOCN,
@@ -26,13 +26,13 @@ function webhook(app) {
                 { unit: 'RH', value: parseFloat(body.RH), source: 'HUMISTOR' }
             ]
         };
-        app.io.emit('SKYFALL', latest);
+        app.io.emit('SKYFALL', latest_data);
         this.body = {};
     });
 };
 
 function latest(app) {
     return route.get('/output/latest', function* rouote_latest() {
-        this.body = latest;
+        this.body = latest_data;
     });
 };
