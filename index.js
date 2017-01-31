@@ -5,7 +5,7 @@ var koa         = require('koa.io'),
     serve       = require('koa-static'),
     path        = require('path'),
     pkg         = require('./package'),
-    photon      = require('./photon'),
+    routes      = require('./routes'),
     port        = process.env.PORT || process.env.NODE_PORT || 3001,
     app         = koa();
 
@@ -26,6 +26,7 @@ app.io.use(function* (next) {
     console.log('disconnect');
 });
 
+app.use(routes.webhook(app));
 photon.init();
 photon.listen(function onData(data) {
     app.io.emit(data.source, data);
