@@ -11,7 +11,7 @@ function webhook(app) {
     return route.post('/input/webhook', function* rouote_webhook() {
         var body = yield parse(this);
         console.log(body);
-        app.io.emit('BARORESISTOR', { unit: 'kPa', value: parseFloat(body.KPA), source: 'BARORESISTOR' });
+        app.io.emit('BARORESISTOR', { unit: 'kPa', value: (parseFloat(body.KPA)/1000), source: 'BARORESISTOR' });
         app.io.emit('THERMORESISTOR', { unit: 'C', value: parseFloat(body.C), source: 'THERMORESISTOR' });
         app.io.emit('THERMORESISTOR', { unit: 'F', value: ((parseFloat(body.C) * 1.8) + 32), source: 'THERMORESISTOR' });
         app.io.emit('PHOTORESISTOR', { unit: 'RL', value: parseFloat(body.RL), source: 'PHOTORESISTOR' });
