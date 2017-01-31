@@ -1,10 +1,11 @@
+// This #include statement was automatically added by the Particle IDE.
+#include <SparkFun_Photon_Weather_Shield_Library.h>
+
 // -----------------------------------------
 // Publish and Dashboard with Photoresistors
 // -----------------------------------------
 // This app will publish events for photoresistor,
 // humistor, baroresistor, thermoresistor sensors.
-
-#include "SparkFun_Photon_Weather_Shield_Library/SparkFun_Photon_Weather_Shield_Library.h"
 
 char Org[] = "ANDJOSH";
 char Disp[] = "SKYFALL";
@@ -16,6 +17,8 @@ int boardLed = D7; // This is the LED that is already on your device.
 
 int photoresistor = A4; // This is where your photoresistor is plugged in. The other side goes to the "power" pin (below).
 int power = A5; // This is the other end of your photoresistor. The other side is plugged into the "photoresistor" pin (above).
+
+Weather sensor;
 
 // We start with the setup function.
 void setup() {
@@ -69,7 +72,7 @@ void loop() {
   float c = sensor.getTemp();
 
   // Measure Pa pressure from the MPL3115A2
-  float p = sensor.getPressure();
+  float p = sensor.readPressure();
 
   // Measure light from the photoresistor
   int l = analogRead(photoresistor);
@@ -81,3 +84,4 @@ void loop() {
   Spark.publish(Disp, payload);
 
 }
+
