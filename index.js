@@ -27,7 +27,3 @@ app.io.use(function* (next) {
 });
 
 app.use(routes.webhook(app));
-photon.init();
-photon.listen(function onData(data) {
-    app.io.emit(data.source, data);
-});
