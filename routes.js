@@ -2,17 +2,25 @@
 
 var parse = require('co-body'),
     route = require('koa-route'),
+    pg    = require('./lib/pg'),
+    meta  = require('./lib/meta'),
     latest_data = {};
 
+const DAY_MS = 1000 * 60 * 60 * 24;
+const MAX_PER_PAGE = 100000;
+const DEFAULT_PER_PAGE = 200;
+
 module.exports = {
-    webhook: webhook,
-    latest: latest
+    webhook:               webhook,
+    latest:                latest,
+    date_range:            date_range,
+    parse_pagination_qs:   parse_pagination_qs
 };
 
 function webhook(app) {
     return route.post('/input/webhook', function* rouote_webhook() {
         var body = yield parse(this);
-        console.log(body);
+        console.log('raw body: %j', body);
         
         latest_data = {
             created_at: body.published_at,
@@ -28,11 +36,53 @@ function webhook(app) {
         };
         app.io.emit('SKYFALL', latest_data);
         this.body = {};
+        yield pg('sensor_data').insert({
+            created_at:   latest_data.created_at,
+            device_id:    latest_data.device_id,
+            location:     latest_data.location,
+            data:         JSON.stringify(latest_data.data)
+        });
+        yield pb('sensor_data')
+            .where('created_at', '<', new Date((new Date()).getTime() - DAY_MS))
+            .del();
     });
-};
+}
 
 function latest(app) {
     return route.get('/output/latest', function* rouote_latest() {
         this.body = latest_data;
     });
-};
+}
+
+function date_range(app) {
+    return route.get('/output/date-range', function* route_date_range() {
+        var query   = {},
+            now     = new Date(),
+            start   = new Date(this.query.start || now),
+            end     = new Date(this.query.end || now),
+            results = [];
+        
+        query = pg.select('*').from('sensor_data')
+            .where('created_at', '<', end)
+            .where('created_at', '>', start);
+        query = query.paginate(this.state.limit, this.state.offset);
+        results = yield query;
+        this.body = {
+            meta: meta.call(this, results),
+            data: results
+        };
+    });
+}
+
+function parse_pagination_qs() {
+    return function* parse_pagination_qs(next) {
+        var limit = this.query.limit,
+            offset = this.query.offset;
+
+        this.state.limit = Math.max(0, Math.min(
+            parseInt(limit ? limit[0] : 0, 10) || DEFAULT_PER_PAGE, MAX_PER_PAGE
+        ));
+        this.state.offset = Math.max(parseInt(offset ? offset[0] : 0, 10) || 0, 0);
+        yield next;
+    };
+}
