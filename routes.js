@@ -62,7 +62,7 @@ function date_range(app) {
             end     = new Date(this.query.end || now),
             results = [];
         
-        query = pg.select('*').from('sensor_data')
+        query = pg.select().from('sensor_data')
             .where('created_at', '<', end)
             .where('created_at', '>', start);
         query = query.paginate(this.state.limit, this.state.offset);
