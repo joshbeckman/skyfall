@@ -69,7 +69,7 @@ function date_range(app) {
         results = yield query;
         this.body = {
             meta: meta.call(this, results),
-            data: results
+            data: results.data
         };
     });
 }
