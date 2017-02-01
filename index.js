@@ -25,5 +25,7 @@ app.io.use(function* (next) {
 
 app.use(routes.webhook(app));
 app.use(routes.latest(app));
+// require('./examples/faker').events(app);
+
 app.listen(port);
 console.info('%s v%s listening on 0.0.0.0:%s', pkg.name, pkg.version, port);
