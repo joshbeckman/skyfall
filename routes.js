@@ -42,7 +42,7 @@ function webhook(app) {
             location:     latest_data.location,
             data:         JSON.stringify(latest_data.data)
         });
-        yield pb('sensor_data')
+        yield pg('sensor_data')
             .where('created_at', '<', new Date((new Date()).getTime() - DAY_MS))
             .del();
     });
