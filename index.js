@@ -25,6 +25,8 @@ app.io.use(function* (next) {
 
 app.use(routes.webhook(app));
 app.use(routes.latest(app));
+app.use(routes.parse_pagination_qs(app));
+app.use(routes.date_range(app));
 // require('./examples/faker').events(app);
 
 app.listen(port);
