@@ -1,4 +1,46 @@
 window.skyfall = window.skyfall || {};
+/**
+ * request
+ *
+ * @param {String} url
+ * @param {Function} cb accepting: error, body, xhr
+ * @param {String} method HTTP method
+ * @param {String|JSON} post Body
+ * @param {String} contenttype of POST
+ */
+window.skyfall.request = function(url, cb, method, post, contenttype) {
+    var requestTimeout, xhr;
+    try {
+        xhr = new XMLHttpRequest();
+    } catch (e) {
+        try {
+            xhr = new ActiveXObject("Msxml2.XMLHTTP");
+        } catch (error) {
+            if (console) console.log("_.request: XMLHttpRequest not supported");
+            return null;
+        }
+    }
+    requestTimeout = setTimeout(function() {
+        xhr.abort();
+        cb(new Error("_.request: aborted by timeout"), "", xhr);
+    }, 10000);
+    xhr.onreadystatechange = function(){
+        if (xhr.readyState != 4) return;
+        clearTimeout(requestTimeout);
+        cb(xhr.status != 200 ?
+            new Error("_.request: server respnse status is " + xhr.status) :
+            false, xhr.responseText, xhr);
+    };
+    xhr.open(method ? method.toUpperCase() : "GET", url, true);
+    if (!post) {
+        xhr.send();
+    } else {
+        xhr.setRequestHeader(
+            'Content-type',
+            contenttype ? contenttype : 'application/x-www-form-urlencoded');
+        xhr.send(post);
+    }
+};
 (function(window, document) {
     var h1          = document.querySelector('h1'),
         pBaro       = document.querySelector('#BARORESISTOR'),
@@ -7,6 +49,8 @@ window.skyfall = window.skyfall || {};
         pHumid      = document.querySelector('#HUMISTOR'),
         p           = document.querySelector('#help'),
         chart_width = Math.min(800, h1.clientWidth),
+        yesterday   = new Date((new Date).getTime() - (1000 * 60 * 60 * 24)),
+        aggregator  = [],
         chart_colors = {},
         chart_titles = {},
         big_data    = {};
@@ -23,12 +67,27 @@ window.skyfall = window.skyfall || {};
     chart_titles.photo = 'Relative Light';
     chart_titles.therm = 'Temperature (ºF)';
     chart_titles.barom = 'Barometric Pressure (kPa)';
-    document.querySelector('#socketScript')
-        .addEventListener('load', onload, false);
 
-    function onload() {
-        window.skyfall.socket = window.io();
-        window.skyfall.socket.on('SKYFALL', handleSkyfall);
+    yesterday = yesterday.toJSON().substring(0,10);
+    window.skyfall.request('/output/date-range?start=' + yesterday,
+        handleResponse);
+
+    function handleResponse(err, data, xhr) {
+        if (err) {
+            alert(err);
+            return;
+        }
+        var body = JSON.parse(data);
+
+        aggregator.concat(body.data);
+        if (body.meta.next) {
+            window.skyfall.request(body.meta.next, handleResponse);
+            return;
+        }
+        aggregator.map(handleSkyfall);
+
+        document.querySelector('#timer').innerHTML = '';
+        Object.keys(big_data).map(render_chart);
     }
 
     function handleSkyfall(data) {
@@ -88,13 +147,4 @@ window.skyfall = window.skyfall || {};
             target:   '#' + name
         })
     }
-    setInterval(function render_charts() {
-        var timer        = document.querySelector('#timer'),
-            timer_parent = timer.parentNode,
-            charts       = Object.keys(big_data);
-
-        timer_parent.removeChild(timer);
-        charts.map(render_chart);
-        timer_parent.innerHTML = timer.outerHTML;
-    }, 10000);
 })(this, this.document);
