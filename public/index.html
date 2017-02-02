@@ -26,6 +26,30 @@ h1{
 a{
     text-decoration: none;
 }
+.mg-brush-container {
+      cursor: crosshair; 
+}
+
+.mg-brush-container.mg-brushing {
+      cursor: ew-resize; 
+}
+
+.mg-brushed, .mg-brushed * {
+      cursor: zoom-out !important; 
+}
+
+.mg-brush rect.mg-extent {
+      fill: rgba(0, 0, 0, 0.3); 
+}
+
+.mg-brushing-in-progress {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none; 
+}
         </style>
     </head>
     <body>
@@ -48,6 +72,7 @@ a{
         <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js' async=""></script>
         <script src="https://d3js.org/d3.v4.min.js"></script>
         <script src="/metrics-graphics-2.11.0/dist/metricsgraphics.min.js"></script>
+        <script src="/metrics-graphics-2.11.0/mg_line_brushing.js"></script>
         <script src="/index.js"></script>
     </body>
 </html>

@@ -144,6 +144,7 @@ window.skyfall.request = function(url, cb, method, post, contenttype) {
             y_extended_ticks: true,
             min_y_from_data: true,
             area:     false,
+            y_rug:    true,
             target:   '#' + name
         })
     }
