@@ -34,7 +34,7 @@ function webhook(app) {
                 { unit: 'RH', value: parseFloat(body.RH), source: 'HUMISTOR' }
             ]
         };
-        app.io.emit('SKYFALL', latest_data);
+        // app.io.emit('SKYFALL', latest_data);
         this.body = {};
         yield pg('sensor_data').insert({
             created_at:   latest_data.created_at,

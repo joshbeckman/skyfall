@@ -30,30 +30,6 @@ a{
     </head>
     <body>
         <h1>Skyfall</h1>
-        <div id="timer_parent">
-        <svg id="timer" version="1.2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="56" height="56">
-            <defs>
-                <path id="right" fill="#000" d="M55.002,30c0-13.808-11.192-25-25-25v6c10.477,0,19,8.523,19,19s-8.523,19-19,19v6 C43.81,55,55.002,43.808,55.002,30z">
-                    <animateTransform id="rotate" attributeName="transform" type="rotate" from="0 30 30" to="180 30 30" begin="0s" dur="5s" fill="freeze"/>
-                </path>
-
-                <path id="left" fill="#000" d="M11.002,30c0-10.477,8.523-19,19-19V5c-13.808,0-25,11.192-25,25s11.192,25,25,25v-6 C19.526,49,11.002,40.477,11.002,30z">
-                    <animateTransform attributeName="transform" type="rotate" from="0 30 30" to="180 30 30" begin="rotate.end" dur="5s" fill="freeze"/>
-                </path>
-
-                <mask id="hide-left">
-                    <rect x="0" y="0" width="30" height="60" fill="white"/>
-                </mask>
-                <mask id="hide-right">
-                    <rect id="super" x="30" y="0" width="30" height="60" fill="white"/>
-                </mask>
-            </defs>
-
-            <!-- Layout -->
-            <use xlink:href="#right" mask="url(#hide-right)"/>
-            <use xlink:href="#left" mask="url(#hide-left)"/>
-        </svg>
-        </div>
         <div id="charts">
             <div id="photo"></div>
             <div id="barom"></div>
@@ -69,8 +45,6 @@ a{
                 <a target="_blank" href="https://github.com/andjosh/skyfall">What is this?</a>
             </p>
         </div>
-        <script id="socketScript" src="/socket.io/socket.io.js" async="">
-        </script>
         <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js' async=""></script>
         <script src="https://d3js.org/d3.v4.min.js"></script>
         <script src="/metrics-graphics-2.11.0/dist/metricsgraphics.min.js"></script>

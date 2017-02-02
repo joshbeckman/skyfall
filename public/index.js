@@ -86,7 +86,6 @@ window.skyfall.request = function(url, cb, method, post, contenttype) {
         }
         aggregator.map(handleSkyfall);
 
-        document.querySelector('#timer').innerHTML = '';
         Object.keys(big_data).map(render_chart);
     }
 
