@@ -80,9 +80,9 @@ function parse_pagination_qs() {
             offset = this.query.offset;
 
         this.state.limit = Math.max(0, Math.min(
-            parseInt(limit ? limit[0] : 0, 10) || DEFAULT_PER_PAGE, MAX_PER_PAGE
+            parseInt(limit || 0, 10) || DEFAULT_PER_PAGE, MAX_PER_PAGE
         ));
-        this.state.offset = Math.max(parseInt(offset ? offset[0] : 0, 10) || 0, 0);
+        this.state.offset = Math.max(parseInt(offset || 0, 10) || 0, 0);
         yield next;
     };
 }
