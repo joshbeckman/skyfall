@@ -143,6 +143,7 @@ window.skyfall.request = function(url, cb, method, post, contenttype) {
             right:    50,
             color:    chart_colors[name],
             y_extended_ticks: true,
+            min_y_from_data: true,
             area:     false,
             target:   '#' + name
         })
