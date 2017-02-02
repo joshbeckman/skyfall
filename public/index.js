@@ -79,7 +79,7 @@ window.skyfall.request = function(url, cb, method, post, contenttype) {
         }
         var body = JSON.parse(data);
 
-        aggregator.concat(body.data);
+        aggregator = aggregator.concat(body.data);
         if (body.meta.next) {
             window.skyfall.request(body.meta.next, handleResponse);
             return;
