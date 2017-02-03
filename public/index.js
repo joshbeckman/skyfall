@@ -48,7 +48,6 @@ window.skyfall.request = function(url, cb, method, post, contenttype) {
         pPhoto      = document.querySelector('#PHOTORESISTOR'),
         pHumid      = document.querySelector('#HUMISTOR'),
         p           = document.querySelector('#help'),
-        progressBar = document.querySelector('.progressBar'),
         chart_width = Math.min(800, h1.clientWidth),
         yesterday   = new Date((new Date).getTime() - (1000 * 60 * 60 * 24)),
         aggregator  = [],
@@ -81,12 +80,10 @@ window.skyfall.request = function(url, cb, method, post, contenttype) {
         var body = JSON.parse(data);
 
         aggregator = aggregator.concat(body.data);
-        progress(aggregator.length/body.meta.total);
         if (body.meta.next) {
             window.skyfall.request(body.meta.next, handleResponse);
             return;
         }
-        clear_progress();
         aggregator.map(handleSkyfall);
 
         Object.keys(big_data).map(render_chart);
@@ -149,17 +146,5 @@ window.skyfall.request = function(url, cb, method, post, contenttype) {
             area:     false,
             target:   '#' + name
         })
-    }
-    function progress(progL) {
-        if (progL < 100) {
-            progressBar.style.width = progL + '%';
-        }
-    }
-    function clear_progress() {
-        progressBar.style.width = '100%';
-        setTimeout(function() {
-            progressBar.style.left = '50%';
-            progressBar.style.width = '0%';
-        }, 1000);
     }
 })(this, this.document);
