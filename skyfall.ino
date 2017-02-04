@@ -11,7 +11,7 @@ char Org[] = "ANDJOSH";
 char Disp[] = "SKYFALL";
 char Locn[] = "SKYFALL";
 
-int refreshRate = 10000;
+int refreshRate = 60000;
 int boardLed = D7; // This is the LED that is already on your device.
 // On the Photon, it's next to the D7 pin.
 
