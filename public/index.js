@@ -49,7 +49,7 @@ window.skyfall.request = function(url, cb, method, post, contenttype) {
         pHumid      = document.querySelector('#HUMISTOR'),
         p           = document.querySelector('#help'),
         chart_width = Math.min(800, h1.clientWidth),
-        yesterday   = new Date((new Date).getTime() - (1000 * 60 * 60 * 24)),
+        days_ago    = new Date((new Date).getTime() - (1000 * 60 * 60 * 24 * 3)),
         aggregator  = [],
         chart_colors = {},
         chart_titles = {},
@@ -68,8 +68,8 @@ window.skyfall.request = function(url, cb, method, post, contenttype) {
     chart_titles.therm = 'Temperature (ºF)';
     chart_titles.barom = 'Barometric Pressure (kPa)';
 
-    yesterday = yesterday.toJSON().substring(0,10);
-    window.skyfall.request('/output/date-range?start=' + yesterday,
+    days_ago = days_ago.toJSON().substring(0,10);
+    window.skyfall.request('/output/date-range?start=' + days_ago,
         handleResponse);
 
     function handleResponse(err, data, xhr) {
