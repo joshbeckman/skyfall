@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head><!--[if lt IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"></script><![endif]-->
+        <title>Skyfall - Sounds</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-type">
+        <meta name="HandheldFriendly" content="true">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="msapplication-TileColor" content="#ffffff">
+        <link rel="shortcut icon" href="/favicon.png">
+        <style>
+body{
+    -webkit-transition: 0.4s background;
+       -moz-transition: 0.4s background;
+        -ms-transition: 0.4s background;
+            transition: 0.4s background;
+    text-align: center;
+    font-family: Futura, sans-serif;
+}
+h1{
+    font-weight: lighter;
+    padding-top: 20%;
+    text-transform: uppercase;
+}
+a{
+    text-decoration: none;
+}
+        </style>
+    </head>
+    <body>
+        <h1>Skyfall Sounds</h1>
+        <div class="container">
+            <p id="PHOTORESISTOR">Waiting for the sky to fall...</p>
+            <p id="BARORESISTOR"></p>
+            <p id="THERMORESISTOR"></p>
+            <p id="HUMISTOR"></p>
+            <label>Play
+            <input type='checkbox' id='playToggle'/>
+            </label>
+            <br/>
+            <input type='range' value='120' min='80' max='200' id='bpm'/>
+            <p id="help">
+                <a target="_blank" href="https://github.com/andjosh/skyfall">What is this?</a>
+            </p>
+        </div>
+        <script src="https://tonejs.github.io/build/Tone.min.js"></script>
+        <script src="/audio/index.js"></script>
+    </body>
+</html>
