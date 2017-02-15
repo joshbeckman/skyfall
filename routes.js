@@ -43,7 +43,7 @@ function webhook(app) {
             data:         JSON.stringify(latest_data.data)
         });
         yield pg('sensor_data')
-            .where('created_at', '<', new Date((new Date()).getTime() - (DAY_MS * 3)))
+            .where('created_at', '<', new Date((new Date()).getTime() - (DAY_MS * 7)))
             .del();
     });
 }
