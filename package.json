@@ -13,7 +13,7 @@
     "co-body": "^4.2.0",
     "j5-sparkfun-weather-shield": "^0.2.0",
     "johnny-five": "^0.10.6",
-    "knex": "^0.11.10",
+    "knex": "^0.20.3",
     "koa-compress": "^1.0.9",
     "koa-route": "^2.4.2",
     "koa-static": "^2.0.0",
